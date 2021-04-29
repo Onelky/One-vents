@@ -1,26 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import EventDashboard from './features/events/eventDashboard/EventDashboard'
+import Navbar from './features/nav/Navbar'
+import { Container } from 'semantic-ui-react'
 
-function App() {
+import 'semantic-ui-css/semantic.min.css'
+export default function App() {
+  const [formOpen, setFormState] = useState(false); //Este es para definir que el estado del form sea cerrado originalmente
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar setFormState={setFormState} />
+
+      <Container className="main">
+        <EventDashboard setFormState={setFormState} formOpen={formOpen} />
+      </Container>
+
+    </>
   );
 }
-
-export default App;
