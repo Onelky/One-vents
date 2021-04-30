@@ -20,3 +20,8 @@ body{
   margin-left: 0.5rem;
 
 }
+
+#eventListItem .deleteBtn{
+  height: fit-content;
+  background-color: transparent;
+}

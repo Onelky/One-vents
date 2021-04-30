@@ -8,12 +8,30 @@ import { Container } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 export default function App() {
   const [formOpen, setFormState] = useState(false); //Este es para definir que el estado del form sea cerrado originalmente
+
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  function openFormNav() {
+    setSelectedEvent(null);
+    setFormState(true);
+  }
+
+  function handleSelectedEvent(event:any) {
+    setSelectedEvent(event);
+    setFormState(true);
+  }
+
   return (
     <>
-      <Navbar setFormState={setFormState} />
+      <Navbar openFormNav={openFormNav} />
 
       <Container className="main">
-        <EventDashboard setFormState={setFormState} formOpen={formOpen} />
+        <EventDashboard
+          setFormState={setFormState}
+          selectedEvent={selectedEvent}
+          setSelectedEvent={setSelectedEvent}
+          handleSelectedEvent={handleSelectedEvent}
+          formOpen={formOpen} />
       </Container>
 
     </>

@@ -6,17 +6,17 @@ interface MenuItem {
   active?: boolean
 }
 
-export default function Navbar({ setFormState }: any) {
+export default function Navbar({ openFormNav }: any) {
 
   const [currentItem, setItemState] = useState('events');
   const handleItemClick = (e: any, { name }: any) => {
     setItemState(name);
-    setFormState(false);
+    openFormNav(false);
   };
 
   const openForm = (e: any, { name }: any) => {
     handleItemClick(e, name)
-    setFormState(true)
+    openFormNav(true)
   }
 
   return (
