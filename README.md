@@ -1,5 +1,5 @@
 # Description
-This is a React application that allows the user authenticate, to create,edit, delete their events as well as seing their contact's events. It also has user authentication, comments sections, google integration (for events locatio).   
+This is a React application that allows the user to create,edit, delete their events as well as seing their contact's events. It also has user authentication, comments sections, google integration (for events location).   
 
 ## Available Scripts
 
