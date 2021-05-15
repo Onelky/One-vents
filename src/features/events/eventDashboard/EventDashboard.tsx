@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Grid } from 'semantic-ui-react';
 import EventList from './EventList';
-import EventForm from '../eventForm/EventForm'
 import { sampleData } from '../../../app/api/sample-data'
-import { updateSourceFile } from 'typescript';
 
 
-export default function EventDashboard({ formOpen, setFormState, handleSelectedEvent,
-  setSelectedEvent, selectedEvent }: any) {
+export default function EventDashboard({ formOpen, setFormState }: any) {
   const [events, setEvents] = useState(sampleData)
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
 
-  function createEvent(newEvent: any) {
-    setEvents([...events, newEvent])
-  }
 
-  function handleUpdateEvent(event: any) {
+  // function createEvent(newEvent: any) {
+  //   setEvents([...events, newEvent])
+  // }
 
-    setEvents(events.map(evt => evt.id === event.id ? event : evt));
-    setSelectedEvent(null);
+  // function handleUpdateEvent(event: any) {
 
+  //   setEvents(events.map(evt => evt.id === event.id ? event : evt));
+  //   setSelectedEvent(null);
+
+  // }
+  function handleSelectedEvent(event: any) {
+    setSelectedEvent(event);
   }
 
   function handleDeleteEvent(eventId: string) {
@@ -41,17 +43,7 @@ export default function EventDashboard({ formOpen, setFormState, handleSelectedE
       </Grid.Column>
 
       <Grid.Column width={6}>
-        {
-          formOpen &&
-          <EventForm
-            setFormState={setFormState}
-            setEvents={setEvents}
-            createEvent={createEvent}
-            selectedEvent={selectedEvent}
-            updateEvent={handleUpdateEvent}
-            key={selectedEvent ? selectedEvent.id : null}
-          />
-        }
+
 
       </Grid.Column>
     </Grid>

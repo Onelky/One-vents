@@ -1,52 +1,47 @@
-import React, { Component, useState } from 'react';
-import { Container, Menu, Button } from 'semantic-ui-react'
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Container, Menu, Item } from 'semantic-ui-react'
+import clockIcon from '../../assets/calendar.png'
+import SignedOutMenu from './signedOutMenu'
+import SignedInMenu from './signedInMenu'
 
-interface MenuItem {
-  name?: string
-  active?: boolean
-}
 
-export default function Navbar({ openFormNav }: any) {
+export default function Navbar() {
 
-  const [currentItem, setItemState] = useState('events');
-  const handleItemClick = (e: any, { name }: any) => {
-    setItemState(name);
-    openFormNav(false);
-  };
-
-  const openForm = (e: any, { name }: any) => {
-    handleItemClick(e, name)
-    openFormNav(true)
-  }
+  const [authenticated, setAuth] = useState(false);
 
   return (
     <Menu fixed="top" inverted id="navbarTop">
       <Container>
-        <Menu.Item header>
-          Re-events
+
+        <Menu.Item
+
+          as={NavLink} exact to='/'
+          content="onEvents"
+          header>
+          <Item.Image src={clockIcon} size='mini'></Item.Image>
+          <Item.Header>One-vents</Item.Header>
+
         </Menu.Item>
+
         <Menu.Item
           name='events'
-          active={currentItem === 'events'}
-          onClick={handleItemClick}
-        >
-
-        </Menu.Item>
-        <Menu.Item
-          name='create event'
-          active={currentItem === 'create event'}
-          onClick={openForm}
+          as={NavLink} to='/events'
         />
 
-        <Menu.Menu position='right'>
-          <Menu.Item>
-            <Button inverted basic content='Login'></Button>
-          </Menu.Item>
-          <Menu.Item>
-            <Button basic inverted content='Register'></Button>
-          </Menu.Item>
+        {
+          authenticated &&
+          <Menu.Item
+            name='create event'
+            as={NavLink} to='/createevent'
+          />
+        }
 
-        </Menu.Menu>
+
+        {authenticated
+          ? <SignedInMenu setAuth={setAuth} />
+          : <SignedOutMenu setAuth={setAuth} />}
+
       </Container>
     </Menu>
 

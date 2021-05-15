@@ -1,38 +1,36 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
+import { Fragment } from 'react';
+import 'semantic-ui-css/semantic.min.css'
 import './App.css';
 import EventDashboard from './features/events/eventDashboard/EventDashboard'
 import Navbar from './features/nav/Navbar'
 import { Container } from 'semantic-ui-react'
+import { Route } from 'react-router-dom'
 
-import 'semantic-ui-css/semantic.min.css'
+import HomePage from './features/home/HomePage'
+import EventDetailed from './features/events/eventDetailed/eventDetailed'
+import EventForm from './features/events/eventForm/EventForm'
+
 export default function App() {
-  const [formOpen, setFormState] = useState(false); //Este es para definir que el estado del form sea cerrado originalmente
 
-  const [selectedEvent, setSelectedEvent] = useState(null);
-
-  function openFormNav() {
-    setSelectedEvent(null);
-    setFormState(true);
-  }
-
-  function handleSelectedEvent(event:any) {
-    setSelectedEvent(event);
-    setFormState(true);
-  }
 
   return (
     <>
-      <Navbar openFormNav={openFormNav} />
+      <Route exact path='/' component={HomePage} />
+      <Route
+        path={'/(.+)'}
+        render={() => (
+          <Fragment>
+            <Navbar />
+            <Container className="main">
+              <Route exact path='/events' component={EventDashboard} />
+              <Route path='/events/:id' component={EventDetailed} />
+              <Route path={['/createevent', '/manage']} component={EventForm} />
 
-      <Container className="main">
-        <EventDashboard
-          setFormState={setFormState}
-          selectedEvent={selectedEvent}
-          setSelectedEvent={setSelectedEvent}
-          handleSelectedEvent={handleSelectedEvent}
-          formOpen={formOpen} />
-      </Container>
+            </Container>
+          </Fragment>
+
+        )}
+      />
 
     </>
   );

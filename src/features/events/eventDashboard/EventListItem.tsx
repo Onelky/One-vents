@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { Item, Segment, Icon, Button, List } from 'semantic-ui-react'
 import EventListAtendee from './EventListAtendee'
 
@@ -52,6 +53,7 @@ export default function EventListItem({ event, handleSelectedEvent, deleteEvent 
             floated='right'
             color='teal'
             content='View'
+            as={Link} to='/createevent'
             onClick={() => handleSelectedEvent(event)} />
 
         </Segment>

@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import EventListItem from './EventListItem'
 
 export default function EventList({ events, handleSelectedEvent, deleteEvent}: any){

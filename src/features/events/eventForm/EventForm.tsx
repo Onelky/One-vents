@@ -1,9 +1,10 @@
 import cuid from 'cuid';
-import React, { useState } from 'react'
+import { useState, } from 'react'
+import { Link } from 'react-router-dom';
 import { Segment, Header, Form, Button } from 'semantic-ui-react'
 
 
-export default function EventForm({ setFormState, createEvent, selectedEvent, updateEvent }: any) {
+export default function EventForm({ createEvent, selectedEvent, updateEvent }: any) {
   const initialValues = selectedEvent ?? {
     title: '',
     category: '',
@@ -18,7 +19,6 @@ export default function EventForm({ setFormState, createEvent, selectedEvent, up
       ? updateEvent({ ...selectedEvent, ...eventValues })
       : createEvent({...eventValues, id: cuid(), hostedBy: 'Onelky', attendees: [] });
     
-      setFormState(false);
   }
 
   function handleInputChanges(e: any) {
@@ -81,7 +81,7 @@ export default function EventForm({ setFormState, createEvent, selectedEvent, up
           positive
           content={selectedEvent ? 'Update' : 'Submit'}
         />
-        <Button floated='right' onClick={() => setFormState(false)}>Cancel</Button>
+        <Button floated='right' as={Link} to='/events'>Cancel</Button>
       </Form>
     </Segment>
   )

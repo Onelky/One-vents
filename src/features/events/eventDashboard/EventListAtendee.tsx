@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import { Image, List } from 'semantic-ui-react'
 
 export default function EventListAtendee({atendee}: any) {
