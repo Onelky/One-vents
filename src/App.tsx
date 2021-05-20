@@ -4,13 +4,15 @@ import './App.css';
 import EventDashboard from './features/events/eventDashboard/EventDashboard'
 import Navbar from './features/nav/Navbar'
 import { Container } from 'semantic-ui-react'
-import { Route } from 'react-router-dom'
-
+import { Route, useLocation } from 'react-router-dom'
 import HomePage from './features/home/HomePage'
 import EventDetailed from './features/events/eventDetailed/eventDetailed'
 import EventForm from './features/events/eventForm/EventForm'
+import Sandbox from './testReducer/sandbox';
 
 export default function App() {
+
+  const { key } = useLocation();
 
 
   return (
@@ -23,8 +25,10 @@ export default function App() {
             <Navbar />
             <Container className="main">
               <Route exact path='/events' component={EventDashboard} />
+              <Route exact path='/sandbox' component={Sandbox} />
+              
               <Route path='/events/:id' component={EventDetailed} />
-              <Route path={['/createevent', '/manage']} component={EventForm} />
+              <Route path={['/createevent', '/manage/:id']} component={EventForm} key = {key} />
 
             </Container>
           </Fragment>

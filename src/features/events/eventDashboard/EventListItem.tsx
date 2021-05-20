@@ -1,9 +1,13 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Item, Segment, Icon, Button, List } from 'semantic-ui-react'
 import EventListAtendee from './EventListAtendee'
+import { deleteEvent } from '../eventActions'
 
-export default function EventListItem({ event, handleSelectedEvent, deleteEvent }: any) {
+export default function EventListItem({ event }: any) {
+  const dispatch = useDispatch();
+
   return (
     <Fragment>
       <Segment.Group id="eventListItem">
@@ -17,12 +21,11 @@ export default function EventListItem({ event, handleSelectedEvent, deleteEvent 
 
               </Item.Content>
               <Button
-                className='deleteBtn'                
-                onClick={() => deleteEvent(event.id)}
-                floated = 'right'
-              >
-                <Icon
-                  name='delete' />
+                className='deleteBtn'
+                onClick={() => dispatch(deleteEvent(event.id))}
+                floated='right'>
+                <Icon name='delete' />
+                
               </Button>
 
             </Item>
@@ -39,10 +42,16 @@ export default function EventListItem({ event, handleSelectedEvent, deleteEvent 
         <Segment secondary>
 
           <List horizontal>
-            {event.attendees.map((atendee: any) => (
-              <EventListAtendee atendee={atendee} key={atendee.id} />
+            {
+              event.attendees &&
 
-            ))}
+              event.attendees.map((atendee: any) => (
+                <EventListAtendee atendee={atendee} key={atendee.id} />
+
+              ))
+
+            }
+
 
           </List>
         </Segment>
@@ -53,8 +62,8 @@ export default function EventListItem({ event, handleSelectedEvent, deleteEvent 
             floated='right'
             color='teal'
             content='View'
-            as={Link} to='/createevent'
-            onClick={() => handleSelectedEvent(event)} />
+            as={Link} to={`/events/${event.id}`}
+          />
 
         </Segment>
 

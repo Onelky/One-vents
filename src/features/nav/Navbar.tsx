@@ -28,6 +28,10 @@ export default function Navbar() {
           name='events'
           as={NavLink} to='/events'
         />
+        <Menu.Item
+          name='sandbox'
+          as={NavLink} to='/sandbox'
+        />
 
         {
           authenticated &&
