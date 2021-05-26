@@ -4,11 +4,11 @@ import { Container, Menu, Item } from 'semantic-ui-react'
 import clockIcon from '../../assets/calendar.png'
 import SignedOutMenu from './signedOutMenu'
 import SignedInMenu from './signedInMenu'
+import { RootStateOrAny, useSelector } from 'react-redux';
 
 
 export default function Navbar() {
-
-  const [authenticated, setAuth] = useState(false);
+  const {authenticated} = useSelector((state: RootStateOrAny) => state.auth);
 
   return (
     <Menu fixed="top" inverted id="navbarTop">
@@ -43,8 +43,8 @@ export default function Navbar() {
 
 
         {authenticated
-          ? <SignedInMenu setAuth={setAuth} />
-          : <SignedOutMenu setAuth={setAuth} />}
+          ? <SignedInMenu />
+          : <SignedOutMenu />}
 
       </Container>
     </Menu>

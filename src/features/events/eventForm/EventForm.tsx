@@ -1,16 +1,18 @@
-import cuid from 'cuid';
-import { useState, } from 'react'
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Segment, Header, Form, Button } from 'semantic-ui-react'
+import { Segment, Header, Button } from 'semantic-ui-react'
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import CustomFormField from '../../../app/common/form/customFormField';
 import { addEvent, updateEvent } from '../eventActions';
-
-
+import cuid from 'cuid';
+import CustomTextArea from '../../../app/common/form/customTextArea';
+import CustomSelectInput from '../../../app/common/form/customSelectInput';
+import { categoryData } from '../../../app/api/categoryData';
+import CustomDatePicker from '../../../app/common/form/customDatePicker';
 export default function EventForm({ match, history }: any) {
 
-
   const selectedEvent = useSelector((state: RootStateOrAny) => state.event.events.find((e: any) => e.id === match.params.id))
-
   const dispatch = useDispatch();
 
   const initialValues = selectedEvent ?? {
@@ -20,80 +22,81 @@ export default function EventForm({ match, history }: any) {
     venue: '',
     date: ''
   }
-  const [eventValues, setValues] = useState(initialValues);
 
-  function handleSubmit() {
+  const eventValidationSchema = Yup.object().shape({
 
-    selectedEvent
-      ? dispatch(updateEvent(eventValues))
-      : dispatch(addEvent({ ...eventValues, id: cuid(), hostedBy: 'Onelky', attendees: [] }));
+    title: Yup.string()
+      .min(2, 'Too Short!')
+      .max(30, 'Too Long!')
+      .required('Required'),
 
-    history.push('/events')
-  }
+    category: Yup.string()
+      .max(15, 'Too Long!')
+      .required('Required'),
 
-  function handleInputChanges(e: any) {
-    const { value, name } = e.target;
-    setValues({ ...eventValues, [name]: value })
+    description: Yup.string()
+      .required('Required'),
 
-  }
+    venue: Yup.string()
+      .min(2, 'Too Short!')
+      .max(100, 'Too Long!')
+      .required('Required'),
 
-
+    date: Yup.date()
+      .required('Required')
+  });
 
   return (
     <Segment clearing>
-      <Header content={selectedEvent ? 'Edit event' : 'Create a new event'}></Header>
-      <Form onSubmit={handleSubmit}>
-        <Form.Input
-          label='Title'
-          type='text'
-          placeholder='Event title'
-          name='title'
-          value={eventValues.title}
-          onChange={e => handleInputChanges(e)}
-        />
+      <Header size='huge' textAlign='center'
+        content={selectedEvent ? 'Edit event' : 'Create a new event'} />
+      <Formik
+        initialValues={initialValues}
+        onSubmit={event => {
+          selectedEvent
+            ? dispatch(updateEvent(event))
+            : dispatch(addEvent({ ...event, id: cuid(), hostedBy: 'Onelky', attendees: [] }));
 
-        <Form.Input
-          label='Category'
-          value={eventValues.category}
-          placeholder='Event category'
-          name='category'
-          onChange={e => handleInputChanges(e)}
-        />
+          history.push('/events')
+        }}
 
-        <Form.Input
-          label='Description'
-          placeholder='Event description'
-          name='description'
-          value={eventValues.description}
-          onChange={e => handleInputChanges(e)}
-        />
+        validationSchema={eventValidationSchema}>
+        
+        {({ isValid, dirty, isSubmitting }) => (
+          <Form className='ui form'>
+            <Header as='h3' color='teal' content='Event details' />
 
-        <Form.Input
-          label='City'
-          placeholder='Event city'
-          name='venue'
-          value={eventValues.venue}
-          onChange={e => handleInputChanges(e)}
-        />
+            <CustomFormField name='title' placeholder='Event title' />
+            <CustomSelectInput name='category' placeholder='Event category' options={categoryData}></CustomSelectInput>
 
-        <Form.Input
-          label='Date'
-          type='date'
-          placeholder='Event date'
-          name='date'
-          value={eventValues.date}
-          onChange={e => handleInputChanges(e)}
-        />
+            <CustomTextArea rows={3} name='description' type='text' placeholder='Event description' />
 
-        <Button
-          type='submit'
-          floated='right'
-          positive
-          content={selectedEvent ? 'Update' : 'Submit'}
-        />
-        <Button floated='right' as={Link} to='/events'>Cancel</Button>
-      </Form>
-    </Segment>
+            <Header as='h3' color='teal' content='Location details' />
+            <CustomFormField name='venue' placeholder='Event venue' />
+            
+            <CustomDatePicker name='date' showTimeSelect timeCaption='Time'
+              placeholderText='Event date' 
+              timeFormat='HH:mm'
+              dateFormat='MMMM dd yyyy, h:mm a'/>
+
+            <Button type='submit' floated='right' positive
+              content={selectedEvent ? 'Update' : 'Submit'}
+              loading = {isSubmitting}
+              disabled={!isValid || !dirty || isSubmitting}
+            />
+
+            <Button floated='right' as={Link} to='/events'
+              content='Cancel'
+              disabled={isSubmitting} />
+
+          </Form>
+
+        )}
+
+        
+      </Formik>
+
+    </Segment >
   )
 
 }

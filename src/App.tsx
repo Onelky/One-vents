@@ -9,6 +9,7 @@ import HomePage from './features/home/HomePage'
 import EventDetailed from './features/events/eventDetailed/eventDetailed'
 import EventForm from './features/events/eventForm/EventForm'
 import Sandbox from './testReducer/sandbox';
+import ModalManager from './app/common/modals/modalManager';
 
 export default function App() {
 
@@ -17,6 +18,7 @@ export default function App() {
 
   return (
     <>
+      <ModalManager/>
       <Route exact path='/' component={HomePage} />
       <Route
         path={'/(.+)'}

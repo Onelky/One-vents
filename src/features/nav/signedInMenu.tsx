@@ -1,15 +1,18 @@
 import { Link, useHistory } from 'react-router-dom';
 import { Menu, Image, Dropdown } from 'semantic-ui-react'
-import lorde from '../../assets/lorde.jpeg'
+import {  RootStateOrAny, useDispatch, useSelector } from 'react-redux'; import { signOut } from '../auth/authActions';
+import userImg from '../../assets/user.png'
 
-export default function SignedInMenu({ setAuth }: any) {
-  
-  // En el caso de que se tengan elementos como este (que no son generados con  un Route) se puede hacer uso del hook useHistory(); 
 
+export default function SignedInMenu() {
+
+  // En el caso de que se tengan elementos como este (que no son generados con  un Route) se puede hacer uso del hook useHector y(); 
+  const dispatch = useDispatch();
   const history = useHistory();
+  const { currentUser} = useSelector((state: RootStateOrAny) => state.auth)
 
-  function handleSignOut() {
-    setAuth(false);
+  function handleSignOut(){ 
+    dispatch(signOut())
     history.push('/');
 
   }
@@ -17,14 +20,14 @@ export default function SignedInMenu({ setAuth }: any) {
   return (
 
     <Menu.Item position='right'>
-      <Image avatar src={lorde}></Image>
-      <Dropdown pointing='top right' text='Lorde'>
+      <Image avatar src={currentUser.photoUrl || userImg}></Image>
+      <Dropdown pointing='top right' text={currentUser.email}>
         <Dropdown.Menu>
           <Dropdown.Item
             as={Link} to='/createEvent'
             icon='plus'
             text='Create event' />
-          
+
           <Dropdown.Item
             icon='user'
             text='My profile' />
@@ -34,7 +37,7 @@ export default function SignedInMenu({ setAuth }: any) {
             onClick={handleSignOut}
 
           />
-          
+
         </Dropdown.Menu>
 
       </Dropdown>

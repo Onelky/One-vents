@@ -1,5 +1,8 @@
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { Button } from "semantic-ui-react";
+import { openModal } from "../app/common/modals/modalActions";
+import LoginForm from "../features/auth/loginForm";
+import ModalTest from "./modalTest";
 import { decrement, increment } from "./testReducer";
 
 export default function Sandbox() {
@@ -20,6 +23,13 @@ export default function Sandbox() {
         color='red'
         onClick={() => dispatch(decrement(10))}
       />
+
+      <Button
+        content='Open modal'
+        color='teal'
+        onClick={() => dispatch(openModal({ modalType: 'ModalTest', modalProps: { data } }))} />
+      
+      <LoginForm></LoginForm>
     </>
   )
 }
